@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"protosym/internal/parsers"
+	"protosym/internal/command_parsers"
 )
 
 func main() {
@@ -21,15 +21,13 @@ func main() {
 	}
 	defer file.Close()
 
-	protoParser := &parsers.ProtoParser{}
-	importParser := &parsers.ImportParser{}
-	serviceParser := &parsers.ServiceParser{}
-	rpcParser := &parsers.RpcParser{}
-	enumParser := &parsers.EnumParser{}
-	messageParser := &parsers.MessageParser{}
+	importParser := command_parsers.NewImportParser()
+	serviceParser := command_parsers.NewServiceParser()
+	rpcParser := command_parsers.NewRpcParser()
+	enumParser := command_parsers.NewEnumParser()
+	messageParser := command_parsers.NewMessageParser()
 
-	protoParser.
-		SetNext(importParser).
+	importParser.
 		SetNext(serviceParser).
 		SetNext(rpcParser).
 		SetNext(enumParser).
@@ -39,7 +37,7 @@ func main() {
 	num := 1
 	for scanner.Scan() {
 		line := scanner.Text()
-		result := protoParser.Parse(line, num)
+		result := importParser.Parse(line, num)
 		if result != "" {
 			fmt.Println(result)
 		}

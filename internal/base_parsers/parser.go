@@ -1,4 +1,4 @@
-package parsers
+package base_parsers
 
 type Parser interface {
 	SetNext(next Parser) Parser

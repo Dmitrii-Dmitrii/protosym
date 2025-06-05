@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package banking;
+
+import "google/protobuf/timestamp.proto";
+
+service BankingService {
+  rpc Transfer(TransferRequest) returns (TransferResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+  rpc GetTransactionHistory(GetTransactionHistoryRequest) returns (GetTransactionHistoryResponse);
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc FreezeAccount(FreezeAccountRequest) returns (FreezeAccountResponse);
+}
+
+message Account {
+  string id = 1;
+  string owner_id = 2;
+  string account_number = 3;
+  AccountType type = 4;
+  double balance = 5;
+  string currency = 6;
+  google.protobuf.Timestamp created_at = 7;
+  bool is_active = 8;
+}
+
+enum AccountType {
+  CHECKING = 0;
+  SAVINGS = 1;
+  CREDIT = 2;
+  BUSINESS = 3;
+}
+
+message Transaction {
+  string id = 1;
+  string from_account_id = 2;
+  string to_account_id = 3;
+  double amount = 4;
+  string currency = 5;
+  TransactionType type = 6;
+  TransactionStatus status = 7;
+  string description = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp processed_at = 10;
+  string reference_number = 11;
+}
+
+enum TransactionType {
+  TRANSFER = 0;
+  DEPOSIT = 1;
+  WITHDRAWAL = 2;
+  PAYMENT = 3;
+  REFUND = 4;
+}
+
+enum TransactionStatus {
+  PENDING = 0;
+  COMPLETED = 1;
+  FAILED = 2;
+  CANCELLED = 3;
+}
+
+message TransferRequest {
+  string from_account_id = 1;
+  string to_account_id = 2;
+  double amount = 3;
+  string description = 4;
+  string reference_number = 5;
+}
+
+message TransferResponse {
+  Transaction transaction = 1;
+  bool success = 2;
+  string error_code = 3;
+  string error_message = 4;
+}
+
+message GetBalanceRequest {
+  string account_id = 1;
+}
+
+message GetBalanceResponse {
+  double balance = 1;
+  string currency = 2;
+  google.protobuf.Timestamp last_updated = 3;
+}
+
+message GetTransactionHistoryRequest {
+  string account_id = 1;
+  google.protobuf.Timestamp from_date = 2;
+  google.protobuf.Timestamp to_date = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+message GetTransactionHistoryResponse {
+  repeated Transaction transactions = 1;
+  int32 total_count = 2;
+  bool has_more = 3;
+}
+
+message CreateAccountRequest {
+  string owner_id = 1;
+  AccountType type = 2;
+  string currency = 3;
+  double initial_deposit = 4;
+}
+
+message CreateAccountResponse {
+  Account account = 1;
+  bool success = 2;
+  string error_message = 3;
+}
+
+message FreezeAccountRequest {
+  string account_id = 1;
+  string reason = 2;
+}
+
+message FreezeAccountResponse {
+  bool success = 1;
+  string error_message = 2;
+}
