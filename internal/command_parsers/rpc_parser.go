@@ -1,18 +1,18 @@
 package command_parsers
 
-import "protosym/internal/base_parsers"
+import "protosym/internal/base_parser"
 
 type RpcParser struct {
-	*base_parsers.BaseParser
+	*base_parser.BaseParser
 }
 
 func NewRpcParser() *RpcParser {
 	return &RpcParser{
-		BaseParser: base_parsers.NewBaseParser(base_parsers.ParserSettings{
-			Command:        "rpc",
-			CommandAlias:   "method",
+		BaseParser: base_parser.NewBaseParser(&base_parser.ParserSettings{
+			Command:        base_parser.RpcCommand,
+			CommandAlias:   base_parser.RpcAlias,
 			CheckFirstOnly: false,
-			NameDelimiter:  "(",
+			NameDelimiter:  base_parser.ParenthesisDelimiter,
 			NameOffset:     1,
 		}),
 	}

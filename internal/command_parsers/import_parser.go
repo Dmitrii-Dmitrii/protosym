@@ -1,17 +1,17 @@
 package command_parsers
 
-import "protosym/internal/base_parsers"
+import "protosym/internal/base_parser"
 
 type ImportParser struct {
-	*base_parsers.BaseParser
+	*base_parser.BaseParser
 }
 
 func NewImportParser() *ImportParser {
 	return &ImportParser{
-		BaseParser: base_parsers.NewBaseParser(base_parsers.ParserSettings{
-			Command:        "import",
+		BaseParser: base_parser.NewBaseParser(&base_parser.ParserSettings{
+			Command:        base_parser.ImportCommand,
 			CheckFirstOnly: true,
-			NameDelimiter:  "\"",
+			NameDelimiter:  base_parser.QuoteDelimiter,
 			NameOffset:     2,
 		}),
 	}

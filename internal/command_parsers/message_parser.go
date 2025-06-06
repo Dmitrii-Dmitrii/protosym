@@ -1,17 +1,17 @@
 package command_parsers
 
-import "protosym/internal/base_parsers"
+import "protosym/internal/base_parser"
 
 type MessageParser struct {
-	*base_parsers.BaseParser
+	*base_parser.BaseParser
 }
 
 func NewMessageParser() *MessageParser {
 	return &MessageParser{
-		BaseParser: base_parsers.NewBaseParser(base_parsers.ParserSettings{
-			Command:        "message",
+		BaseParser: base_parser.NewBaseParser(&base_parser.ParserSettings{
+			Command:        base_parser.MessageCommand,
 			CheckFirstOnly: true,
-			NameDelimiter:  "{",
+			NameDelimiter:  base_parser.BraceDelimiter,
 			NameOffset:     1,
 		}),
 	}

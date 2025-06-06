@@ -15,8 +15,8 @@ func TestEnumParser_Parse_Valid(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := parser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := parser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}
@@ -35,8 +35,8 @@ func TestEnumParser_Parse_Invalid(t *testing.T) {
 	}
 
 	for _, input := range tests {
-		result := parser.Parse(input, 1)
-		if result != "" {
+		result, ok := parser.Parse(input, 1)
+		if ok {
 			t.Errorf("For input '%s': expected empty result, got '%s'", input, result)
 		}
 	}
@@ -55,8 +55,8 @@ func TestImportParser_Parse_Valid(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := parser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := parser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}
@@ -73,8 +73,8 @@ func TestImportParser_Parse_Invalid(t *testing.T) {
 	}
 
 	for _, input := range tests {
-		result := parser.Parse(input, 1)
-		if result != "" {
+		result, ok := parser.Parse(input, 1)
+		if ok {
 			t.Errorf("For input '%s': expected empty result, got '%s'", input, result)
 		}
 	}
@@ -93,8 +93,8 @@ func TestMessageParser_Parse_Valid(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := parser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := parser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}
@@ -112,8 +112,8 @@ func TestMessageParser_Parse_Invalid(t *testing.T) {
 	}
 
 	for _, input := range tests {
-		result := parser.Parse(input, 1)
-		if result != "" {
+		result, ok := parser.Parse(input, 1)
+		if ok {
 			t.Errorf("For input '%s': expected empty result, got '%s'", input, result)
 		}
 	}
@@ -134,8 +134,8 @@ func TestRpcParser_Parse_Valid(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := parser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := parser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}
@@ -153,8 +153,8 @@ func TestRpcParser_Parse_Invalid(t *testing.T) {
 	}
 
 	for _, input := range tests {
-		result := parser.Parse(input, 1)
-		if result != "" {
+		result, ok := parser.Parse(input, 1)
+		if ok {
 			t.Errorf("For input '%s': expected empty result, got '%s'", input, result)
 		}
 	}
@@ -173,8 +173,8 @@ func TestServiceParser_Parse_Valid(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := parser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := parser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}
@@ -192,8 +192,8 @@ func TestServiceParser_Parse_Invalid(t *testing.T) {
 	}
 
 	for _, input := range tests {
-		result := parser.Parse(input, 1)
-		if result != "" {
+		result, ok := parser.Parse(input, 1)
+		if ok {
 			t.Errorf("For input '%s': expected empty result, got '%s'", input, result)
 		}
 	}
@@ -225,8 +225,8 @@ func TestCommandParserChain(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		result := enumParser.Parse(test.input, test.lineNum)
-		if result != test.expected {
+		result, ok := enumParser.Parse(test.input, test.lineNum)
+		if !ok && result != test.expected {
 			t.Errorf("For input '%s': expected '%s', got '%s'", test.input, test.expected, result)
 		}
 	}

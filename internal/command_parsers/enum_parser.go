@@ -1,17 +1,17 @@
 package command_parsers
 
-import "protosym/internal/base_parsers"
+import "protosym/internal/base_parser"
 
 type EnumParser struct {
-	*base_parsers.BaseParser
+	*base_parser.BaseParser
 }
 
 func NewEnumParser() *EnumParser {
 	return &EnumParser{
-		BaseParser: base_parsers.NewBaseParser(base_parsers.ParserSettings{
-			Command:        "enum",
+		BaseParser: base_parser.NewBaseParser(&base_parser.ParserSettings{
+			Command:        base_parser.EnumCommand,
 			CheckFirstOnly: true,
-			NameDelimiter:  "{",
+			NameDelimiter:  base_parser.BraceDelimiter,
 			NameOffset:     1,
 		}),
 	}

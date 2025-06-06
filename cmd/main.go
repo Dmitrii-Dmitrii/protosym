@@ -37,8 +37,8 @@ func main() {
 	num := 1
 	for scanner.Scan() {
 		line := scanner.Text()
-		result := importParser.Parse(line, num)
-		if result != "" {
+		result, ok := importParser.Parse(line, num)
+		if ok {
 			fmt.Println(result)
 		}
 		num++

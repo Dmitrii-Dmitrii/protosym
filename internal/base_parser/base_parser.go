@@ -1,4 +1,4 @@
-package base_parsers
+package base_parser
 
 import (
 	"slices"
@@ -6,12 +6,17 @@ import (
 	"strings"
 )
 
-type BaseParser struct {
-	nextParser Parser
-	settings   ParserSettings
+type Parser interface {
+	SetNext(next Parser) Parser
+	Parse(line string, num int) (string, bool)
 }
 
-func NewBaseParser(settings ParserSettings) *BaseParser {
+type BaseParser struct {
+	nextParser Parser
+	settings   *ParserSettings
+}
+
+func NewBaseParser(settings *ParserSettings) *BaseParser {
 	return &BaseParser{settings: settings}
 }
 
@@ -20,19 +25,19 @@ func (p *BaseParser) SetNext(parser Parser) Parser {
 	return parser
 }
 
-func (p *BaseParser) Parse(line string, num int) string {
-	if result := p.tryParse(line, num); result != "" {
-		return result
+func (p *BaseParser) Parse(line string, num int) (string, bool) {
+	if result, ok := p.tryParse(line, num); ok {
+		return result, ok
 	}
 
 	if p.nextParser == nil {
-		return ""
+		return "", false
 	}
 
 	return p.nextParser.Parse(line, num)
 }
 
-func (p *BaseParser) tryParse(line string, num int) string {
+func (p *BaseParser) tryParse(line string, num int) (string, bool) {
 	command := p.settings.Command
 	symbols := strings.Split(line, " ")
 
@@ -44,19 +49,26 @@ func (p *BaseParser) tryParse(line string, num int) string {
 	}
 
 	if !hasCommand {
-		return ""
+		return "", false
 	}
 
-	nameSymbols := symbols[slices.Index(symbols, command)+1]
+	nameIdx := slices.Index(symbols, command) + 1
+	nameSymbols := symbols[nameIdx]
 
 	var name string
 	var startIdx, endIdx int
+	nameSplit := strings.Split(nameSymbols, p.settings.NameDelimiter)
+
 	if p.settings.NameDelimiter == "\"" {
-		name = strings.Split(nameSymbols, "\"")[1]
+		name = ""
+		if len(nameSplit) > 1 {
+			name = nameSplit[1]
+		}
+
 		startIdx = strings.Index(line, name)
 		endIdx = startIdx + len(name) + p.settings.NameOffset
 	} else {
-		name = strings.Split(nameSymbols, p.settings.NameDelimiter)[0]
+		name = nameSplit[0]
 		startIdx = strings.Index(line, name) + p.settings.NameOffset
 		endIdx = startIdx + len(name)
 	}
@@ -72,5 +84,5 @@ func (p *BaseParser) tryParse(line string, num int) string {
 		strconv.Itoa(startIdx) + "-" +
 		strconv.Itoa(endIdx)
 
-	return result
+	return result, true
 }

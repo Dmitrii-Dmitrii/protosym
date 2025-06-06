@@ -1,4 +1,4 @@
-package base_parsers
+package base_parser
 
 type ParserSettings struct {
 	Command        string

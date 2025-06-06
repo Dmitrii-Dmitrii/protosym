@@ -1,17 +1,17 @@
 package command_parsers
 
-import "protosym/internal/base_parsers"
+import "protosym/internal/base_parser"
 
 type ServiceParser struct {
-	*base_parsers.BaseParser
+	*base_parser.BaseParser
 }
 
 func NewServiceParser() *ServiceParser {
 	return &ServiceParser{
-		BaseParser: base_parsers.NewBaseParser(base_parsers.ParserSettings{
-			Command:        "service",
+		BaseParser: base_parser.NewBaseParser(&base_parser.ParserSettings{
+			Command:        base_parser.ServiceCommand,
 			CheckFirstOnly: true,
-			NameDelimiter:  "{",
+			NameDelimiter:  base_parser.BraceDelimiter,
 			NameOffset:     1,
 		}),
 	}
