@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/example/user";
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc CreateUser(User) returns (GetUserResponse);
+  rpc UpdateUser(User) returns (GetUserResponse);
+  rpc DeleteUser(GetUserRequest) returns (GetUserResponse);
+}
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  bool is_active = 5;
+  repeated string tags = 6;
+}
+
+message GetUserRequest {
+  int32 user_id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+  string error_message = 2;
+}
